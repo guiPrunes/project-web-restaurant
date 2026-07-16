@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Capricho — Restaurantes</title>
+        <link rel="stylesheet" type="text/css" href="/static/style.css">
+    </head>
+    
+    <body>
+        <header class="cabecalho">
+            <h1 class="cabecalho-titulo">Capricho</h1>
+            <menu class="cabecalho-menu">
+                <button class="cabecalho-botao">Adicionar</button>
+                <button class="cabecalho-botao">Editar</button>
+                <button class="cabecalho-botao">Excluir</button>
+            </menu>
+            <div class="cabecalho-usuario">
+                <span>{Usuário}</span>
+                <img name="usuario-foto" src="/static/img/user.png" alt="Foto do usuário" class="cabecalho-usuario-foto">
+            </div>
+        </header>
+        <main> 
+            <div class="wrap">
+                <div class="categorias">
+                    <button class="ativa">Todos</button>
+                    <button>Italiana</button>
+                    <button>Japonesa</button>
+                    <button>Brasileira</button>
+                    <button>Hamburgueria</button>
+                </div>
+                <div class="grid">
+                    <a class="card" href="#">
+                        <div class="card-imagem">imagem</div>
+                        <div class="card-info">
+                            <span class="categoria">Italiana</span>
+                            <h3>Cantina da Nonna</h3>
+                            <p class="avaliacao">★★★★★ <span>4.7 (320)</span></p>
+                            <div class="meta"><span>25–35 min</span><span>Grátis</span></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>
