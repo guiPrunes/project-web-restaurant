@@ -1,0 +1,147 @@
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background: #fff5ec;
+    color: #222;
+}
+
+header.cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #886241;
+    color: #fff;
+    padding: 16px 24px;
+}
+
+header.cabecalho .cabecalho-titulo {
+    margin: 0;
+    font-size: 32px;
+}
+
+header.cabecalho .cabecalho-menu {
+    display: flex;
+    justify-content: right;
+    align-items: right;
+    margin-left: auto;
+    margin-right: 40px;
+    gap: 12px;
+}
+
+header.cabecalho .cabecalho-usuario {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+}
+
+header.cabecalho .cabecalho-usuario img {
+    background: #fff;
+    border-radius: 100%;
+    padding: 2px;
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+}
+
+
+.wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.cabecalho-botao {
+    background-color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 8px; /* Cria o espaço entre um botão e outro */
+}
+
+.categorias {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+div.categorias button {
+    padding: 8px 14px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.categorias button.ativa {
+    background: #886241;
+    color: #fff;
+    border-color: #886241;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card-imagem {
+    height: 120px;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 13px;
+}
+
+.card-info {
+    padding: 12px;
+}
+
+.card-info .categoria {
+    display: inline-block;
+    font-size: 11px;
+    color: #777;
+    background: #eee;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+}
+
+.card-info h3 {
+    margin: 0 0 4px;
+    font-size: 16px;
+}
+
+.card-info .avaliacao {
+    color: #E8A33D;
+    font-size: 14px;
+    margin: 0 0 8px;
+}
+
+.card-info .avaliacao span {
+    color: #777;
+    font-size: 12px;
+}
+
+.card-info .meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #666;
+    border-top: 1px solid #eee;
+    padding-top: 8px;
+}
