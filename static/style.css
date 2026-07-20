@@ -69,7 +69,7 @@ header.cabecalho .cabecalho-usuario img {
     margin-bottom: 24px;
 }
 
-div.categorias button {
+div.categorias a {
     padding: 8px 14px;
     border: 1px solid #ccc;
     background: #fff;
@@ -78,7 +78,7 @@ div.categorias button {
     font-size: 13px;
 }
 
-.categorias button.ativa {
+.categorias a.ativa {
     background: #886241;
     color: #fff;
     border-color: #886241;
