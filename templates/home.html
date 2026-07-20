@@ -10,13 +10,15 @@
     <body>
         <header class="cabecalho">
             <h1 class="cabecalho-titulo">Capricho</h1>
+            <!-- 
             <menu class="cabecalho-menu">
                 <button class="cabecalho-botao">Adicionar</button>
                 <button class="cabecalho-botao">Editar</button>
                 <button class="cabecalho-botao">Excluir</button>
             </menu>
+            -->
             <div class="cabecalho-usuario">
-                <span>{Usuário}</span>
+                <button class="cabecalho-botao"><a href="/login">Log-in</a></button>
                 <img name="usuario-foto" src="{{ url_for('static', filename='img/user.png') }}" alt="Foto do usuário" class="cabecalho-usuario-foto">
             </div>
         </header>
