@@ -7,6 +7,17 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/style.css') }}">
     </head>
     <body>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container">
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
         <header class="cabecalho">
             <a href="/" class="cabecalho-titulo">Capricho</a>
         </header>
@@ -29,6 +40,8 @@
                     </form>
                     <p class="form-footer">
                         Não tem uma conta? <a href="/cadastro">Cadastre-se</a>
+                        <br>
+                        <a href="#">Esqueceu a senha?</a>
                     </p>
                 </div>
             </div>

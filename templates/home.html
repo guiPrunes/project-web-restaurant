@@ -6,8 +6,18 @@
         <title>Capricho — Restaurantes</title>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     </head>
-    
     <body>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container">
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
         <header class="cabecalho">
             <h1 class="cabecalho-titulo">Capricho</h1>
             <!-- 
