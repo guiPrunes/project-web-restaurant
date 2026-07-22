@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, flash, url_for, request
+from flask import Flask, redirect, render_template, flash, url_for, session, request
 from models.restaurante import Restaurante
 from models.avaliacao import Avaliacao
 from models.usuario import Usuario
@@ -31,7 +31,9 @@ filtro_restaurantes = []
 usuarios_cadastrados = {}
 
 admin = Usuario("useradmin", "admin123")
+normal = Usuario("usuario1", "usuario123")
 usuarios_cadastrados[admin._usuario] = admin
+usuarios_cadastrados[normal._usuario] = normal
 
 app = Flask(__name__) # Inicia a aplicação com Flask
 app.secret_key = "bsd534534634$!@#$!Fsdnjgsiobjfbfjkffsdgsdkospvs" # Define a secret_key para uso de sessões (c/ cookies)
@@ -41,22 +43,39 @@ def index():
     """
     
     """
-    categoria_selecionada = request.args.get('categoria')
-    filtro_restaurantes.clear()
+    admin_logado = False
+    usuario_logado = session.get('usuario_logado')
+    if usuario_logado == "useradmin":
+        admin_logado = True
+
+    categoria_selecionada = request.args.get('categoria') # ?categoria={resultado}
+    filtro_restaurantes.clear() # Limpa o filtro quando recarregada a página
     if not categoria_selecionada or categoria_selecionada == "Todos":
-        return render_template('home.html', restaurantes=restaurantes, categorias=categorias, categoria_selecionada=categoria_selecionada)
+        return render_template('home.html', 
+                               restaurantes=restaurantes, 
+                               categorias=categorias, 
+                               categoria_selecionada=categoria_selecionada, 
+                               usuario_logado=usuario_logado, 
+                               admin_logado=admin_logado
+                               )
     else:
         for restaurante in restaurantes:
             if restaurante._categoria == categoria_selecionada:
                 filtro_restaurantes.append(restaurante)
-        return render_template('home.html', restaurantes=filtro_restaurantes, categorias=categorias, categoria_selecionada=categoria_selecionada) 
+        return render_template('home.html', 
+                               restaurantes=filtro_restaurantes, 
+                               categorias=categorias, 
+                               categoria_selecionada=categoria_selecionada, 
+                               usuario_logado=usuario_logado, 
+                               admin_logado=admin_logado
+                               ) 
 
 @app.route("/login")
 def login():
     return render_template('login.html')
 
-@app.route("/auth", methods=['GET', 'POST'])
-def autenticar():
+@app.route("/login/auth", methods=['GET', 'POST'])
+def autenticar_login():
     """
     Autentica um usuário existente
    
@@ -81,14 +100,12 @@ def autenticar():
     # Busca por form_usuario no usuarios_cadastrados, retorna o objeto Usuário caso encontrar
     # Caso não encontrar, retorna None
     usuario_encontrado = usuarios_cadastrados.get(form_usuario)
-    # Ex: form_usuario = "coordenador1"
-    # usuarios_cadastrados = {"coordenador1" : <class Usuário> }
-    # usuario_encontrado = <class Usuário> | Se não encontrar: usuario_encontrado = None
 
     if usuario_encontrado and usuario_encontrado.verificar_senha(form_senha): 
         # Caso usuário esteja no dicionário "usuarios_cadastrados" e,
         # Caso o verificar_senha() retorne True.
-        flash("Login realizado com sucesso!", "sucesso")
+        session['usuario_logado'] = usuario_encontrado._usuario
+        flash(f"Login realizado com sucesso!", "sucesso")
         return redirect(url_for('index'))
     
     if not usuario_encontrado: 
@@ -97,14 +114,42 @@ def autenticar():
         flash("Senha incorreta, tente novamente...", "erro")
     return redirect(url_for('login'))
 
-# @app.route("/cadastro")
-# def cadastrar():
-#     try:
-#         usuario_cadastrado = Usuario(usuario_form, senha_form)
-#     except ValueError as erro: 
-#         flash(str(erro), "erro")
-#         return redirect(url_for("login")) 
-#     usuarios_cadastrados[usuario_cadastrado._usuario] = usuario_cadastrado
+@app.route("/signin")
+def signin():
+    return render_template("signin.html")
+
+@app.route("/signin/auth", methods=['GET', 'POST'])
+def autenticar_signin():
+    if request.method == "GET":
+        return redirect(url_for('signin'))
+    
+    form_usuario = request.form['usuario'].strip().lower()
+    form_senha = request.form['senha'].strip()
+
+    usuario_existe = usuarios_cadastrados.get(form_usuario)
+
+    if usuario_existe:
+        flash("Este usuário já existe, tente outro nome de usuário...", "erro")
+        return redirect(url_for("signin"))
+
+    try:
+        novo_usuario = Usuario(form_usuario, form_senha)
+        usuarios_cadastrados[novo_usuario._usuario] = novo_usuario
+        flash("Usuário cadastrado com sucesso! Faça log-in para continuar...", "sucesso")
+        return redirect(url_for("login"))
+    except ValueError as erro:
+        flash(str(erro), "erro")
+        return redirect(url_for('signin'))
+        
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("index"))
+
+@app.route("/restaurante")
+def restaurante():
+    return render_template("/restaurant_page.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
