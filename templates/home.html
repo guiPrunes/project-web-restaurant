@@ -7,7 +7,7 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
-
+        
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <div class="flash-container">
@@ -20,16 +20,21 @@
 
         <header class="cabecalho">
             <h1 class="cabecalho-titulo">Capricho</h1>
-            <!-- 
-            <menu class="cabecalho-menu">
-                <button class="cabecalho-botao">Adicionar</button>
-                <button class="cabecalho-botao">Editar</button>
-                <button class="cabecalho-botao">Excluir</button>
-            </menu>
-            -->
+            {% if admin_logado %}
+                <menu class="cabecalho-menu-admin">
+                    <button class="cabecalho-botao">Adicionar</button>
+                    <button class="cabecalho-botao">Editar</button>
+                    <button class="cabecalho-botao">Excluir</button>
+                </menu>
+            {% endif %}
             <div class="cabecalho-usuario">
-                <button class="cabecalho-botao"><a href="/login">Log-in</a></button>
-                <img name="usuario-foto" src="{{ url_for('static', filename='img/user.png') }}" alt="Foto do usuário" class="cabecalho-usuario-foto">
+                {% if usuario_logado %}
+                    <a class="cabecalho-botao" href="/logout">Log-out</a>
+                    <span class="usuario-nome">{{ usuario_logado }}</span>
+                    <img class="usuario-foto" src="{{ url_for('static', filename='img/user.png') }}" alt="Foto do usuário" class="cabecalho-usuario-foto">
+                {% else %}    
+                    <a class="cabecalho-botao" href="/login">Log-in</a>
+                {% endif %}
             </div>
         </header>
         <main> 
@@ -41,7 +46,7 @@
                 </div>
                 <div class="grid">
                     {% for restaurante in restaurantes %}
-                    <a class="card" href="#">
+                    <a class="card" href="/restaurante">
                         <div class="card-imagem">imagem</div>
                         <div class="card-info">
                             <span class="categoria">{{ restaurante._categoria }}</span>

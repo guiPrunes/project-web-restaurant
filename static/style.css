@@ -4,6 +4,17 @@
     color: inherit;
 }
 
+body {
+    margin: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background: #fff5ec;
+    color: #222;
+}
+
+/* =========================================
+           ESTILOS DAS FLASH MESSAGES
+   ========================================= */
+
 .flash-container {
   width: 100%;
   max-width: 600px;
@@ -35,11 +46,20 @@
   border-left-color: #ea4335;
 }
 
-body {
-    margin: 0;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    background: #fff5ec;
-    color: #222;
+/* =========================================
+            ESTILOS DA HOME PAGE
+   ========================================= */
+
+.wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
 }
 
 header.cabecalho {
@@ -51,16 +71,24 @@ header.cabecalho {
     padding: 16px 24px;
 }
 
-a.cabecalho-titulo {
+a.cabecalho-titulo,
+h1.cabecalho-titulo {
     font-weight: bold;
-}
-
-header.cabecalho .cabecalho-titulo {
     margin: 0;
     font-size: 32px;
 }
 
-header.cabecalho .cabecalho-menu {
+.cabecalho-botao {
+    background-color: white;
+    color: #222;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 8px; /* Cria o espaço entre um botão e outro */
+}
+
+header.cabecalho .cabecalho-menu-admin {
     display: flex;
     justify-content: right;
     align-items: right;
@@ -76,30 +104,13 @@ header.cabecalho .cabecalho-usuario {
     gap: 10px;
 }
 
-header.cabecalho .cabecalho-usuario img {
+div.cabecalho-usuario img.usuario-foto {
     background: #fff;
     border-radius: 100%;
     padding: 2px;
     width: 48px;
     height: 48px;
     cursor: pointer;
-}
-
-
-.wrap {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 24px;
-}
-
-.cabecalho-botao {
-    background-color: white;
-    color: black;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 8px; /* Cria o espaço entre um botão e outro */
 }
 
 .categorias {
@@ -124,12 +135,6 @@ div.categorias a {
     background: #886241;
     color: #fff;
     border-color: #886241;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 16px;
 }
 
 .card {
@@ -188,17 +193,15 @@ div.categorias a {
     padding-top: 8px;
 }
 
-/* =========================================
-   ESTILOS DA TELA DE LOGIN / FORMULÁRIOS
-   ========================================= */
+/* =================================================
+   ESTILOS DA TELA DE LOGIN & SIGNIN / FORMULÁRIOS
+   ================================================= */
 
-/* Container mais estreito para centralizar o formulário */
 .form-wrap {
     max-width: 450px;
     margin: 40px auto;
 }
 
-/* Cartão branco onde o formulário fica dentro */
 .form-card {
     background: #fff;
     border: 1px solid #eaeaea;
@@ -214,7 +217,6 @@ div.categorias a {
     text-align: center;
 }
 
-/* Grupos de input (Label + Campo) */
 .input-group {
     display: flex;
     flex-direction: column;
@@ -239,13 +241,11 @@ div.categorias a {
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* Efeito ao clicar no input (foco) */
 .input-group input:focus {
     border-color: #886241;
-    box-shadow: 0 0 0 3px rgba(136, 98, 65, 0.15); /* Brilho suave na cor do tema */
+    box-shadow: 0 0 0 3px rgba(136, 98, 65, 0.15);
 }
 
-/* Botão de Enviar (Cor principal marrom) */
 .btn-primario {
     width: 100%;
     background-color: #886241;
@@ -261,10 +261,9 @@ div.categorias a {
 }
 
 .btn-primario:hover {
-    background-color: #725236; /* Marrom levemente mais escuro ao passar o mouse */
+    background-color: #725236;
 }
 
-/* Rodapé do formulário (Link de cadastro) */
 .form-footer {
     text-align: center;
     margin-top: 24px;
