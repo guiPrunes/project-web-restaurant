@@ -1,0 +1,23 @@
+.categorias {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+div.categorias a {
+    padding: 8px 14px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.categorias a.ativa {
+    background: #886241;
+    color: #fff;
+    border-color: #886241;
+}

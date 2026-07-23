@@ -1,0 +1,18 @@
+* { 
+    box-sizing: border-box;
+    text-decoration: none;
+    color: inherit;
+}
+
+body {
+    margin: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background: #fff5ec;
+    color: #222;
+}
+
+.wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px;
+}

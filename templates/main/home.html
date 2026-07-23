@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Página Inicial{% endblock %}
+
+{% block extra_css %}
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/components/cards.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/components/categorias.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/pages/home.css') }}">
+
+{% endblock %}
+
+{% block header %}
+
+    <header class="cabecalho">
+        <h1 class="cabecalho-titulo">Capricho</h1>
+        {% if admin_logado %}
+            <menu class="cabecalho-menu-admin">
+                <button class="cabecalho-botao">Adicionar</button>
+                <button class="cabecalho-botao">Editar</button>
+                <button class="cabecalho-botao">Excluir</button>
+            </menu>
+        {% endif %}
+        <div class="cabecalho-usuario">
+            {% if usuario_logado %}
+                <a class="cabecalho-botao" href="/logout">Log-out</a>
+                <span class="usuario-nome">{{ usuario_logado }}</span>
+                <img class="usuario-foto" src="{{ url_for('static', filename='img/user.png') }}" alt="Foto do usuário">
+            {% else %}    
+                <a class="cabecalho-botao" href="/login">Log-in</a>
+            {% endif %}
+        </div>
+    </header>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="wrap">
+        <div class="categorias">
+            {% for categoria in categorias %}
+            <a href="?categoria={{categoria}}" class="{{ 'ativa' if categoria_selecionada == categoria else ''}}">{{ categoria }}</a>
+            {% endfor %}
+        </div>
+        <div class="grid">
+            {% for restaurante in restaurantes %}
+            <a class="card" href="/restaurante">
+                <div class="card-imagem">imagem</div>
+                <div class="card-info">
+                    <span class="categoria">{{ restaurante._categoria }}</span>
+                    <h3>{{ restaurante._nome }}</h3>
+                    <p class="avaliacao">{{ restaurante.qntd_estrelas }} <span>{{ restaurante.media_avaliacoes }} ({{ restaurante.total_avaliacoes }})</span></p>
+                    <div class="meta"><span>{{ restaurante._delivery._tempo_entrega }}</span><span>{{ restaurante._delivery._taxa_entrega }}</span></div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -51,7 +51,7 @@ def index():
     categoria_selecionada = request.args.get('categoria') # ?categoria={resultado}
     filtro_restaurantes.clear() # Limpa o filtro quando recarregada a página
     if not categoria_selecionada or categoria_selecionada == "Todos":
-        return render_template('home.html', 
+        return render_template('main/home.html', 
                                restaurantes=restaurantes, 
                                categorias=categorias, 
                                categoria_selecionada=categoria_selecionada, 
@@ -62,7 +62,7 @@ def index():
         for restaurante in restaurantes:
             if restaurante._categoria == categoria_selecionada:
                 filtro_restaurantes.append(restaurante)
-        return render_template('home.html', 
+        return render_template('main/home.html', 
                                restaurantes=filtro_restaurantes, 
                                categorias=categorias, 
                                categoria_selecionada=categoria_selecionada, 
@@ -72,7 +72,7 @@ def index():
 
 @app.route("/login")
 def login():
-    return render_template('login.html')
+    return render_template('auth/login.html')
 
 @app.route("/login/auth", methods=['GET', 'POST'])
 def autenticar_login():
@@ -116,7 +116,7 @@ def autenticar_login():
 
 @app.route("/signin")
 def signin():
-    return render_template("signin.html")
+    return render_template("auth/signin.html")
 
 @app.route("/signin/auth", methods=['GET', 'POST'])
 def autenticar_signin():

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Sign-in{% endblock %}
+
+{% block extra_css %}
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/components/forms.css') }}">
+    
+{% endblock %}
+
+{% block content %}
+
+    <div class="wrap form-wrap">
+        <div class="form-card">
+            <h2>Cadastrar</h2>
+            <form action="/signin/auth" method="POST">
+                <div class="input-group">
+                    <label for="usuario">Usuário</label>
+                    <input type="text" id="usuario" name="usuario" required placeholder="Digite seu usuário">
+                </div>
+                
+                <div class="input-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" required placeholder="Digite sua senha">
+                </div>
+                
+                <button type="submit" class="btn-primario">Cadastrar</button>
+            </form>
+            <p class="form-footer">
+                Já tem uma conta? <a href="/login">Log-in</a>
+                <br>
+            </p>
+        </div>
+    </div>
+
+{% endblock %}
