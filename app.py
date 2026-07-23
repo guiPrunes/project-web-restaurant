@@ -1,39 +1,14 @@
 from flask import Flask, redirect, render_template, flash, url_for, session, request
-from models.restaurante import Restaurante
-from models.avaliacao import Avaliacao
 from models.usuario import Usuario
+from models.ex_testes import restaurantes, categorias
 
-# 
-restaurante1 = Restaurante('Verona', 'Italiana')
-restaurante1.delivery('25-35', 0)
-
-restaurante2 = Restaurante('Sabor Caseiro', 'Brasileira')
-restaurante2.delivery('30-40', 5.0)
-
-restaurante3 = Restaurante('Sushi House', 'Japonesa')
-restaurante3.delivery('20-30', 0)
-
-restaurante4 = Restaurante('Los Burguer', 'Hamburgueria')
-restaurante4.delivery('25-35', 7.0)
-
-restaurante5 = Restaurante('Skibidi Toilet Simulator', 'Italiana')
-
-restaurante1.avaliar('Thiago', 4.3, 'Muito bom, ótimo!')
-restaurante1.avaliar('Maria', 4.8, 'Excelente comida!')
-restaurante4.avaliar('João', 4.5, 'Ótimo atendimento!')
-restaurante2.avaliar('Ana', 4.0, 'Comida caseira deliciosa!')
-restaurante5.avaliar('Carlos', 3.8, 'Bom, mas poderia melhorar.')
-
-# 
-categorias = ['Todos','Italiana', 'Brasileira', 'Japonesa', 'Hamburgueria']
-restaurantes = [restaurante1, restaurante2, restaurante3, restaurante4, restaurante5]
 filtro_restaurantes = []
 usuarios_cadastrados = {}
 
-admin = Usuario("useradmin", "admin123")
-normal = Usuario("usuario1", "usuario123")
+admin = Usuario("administrador", "admin123")
+usuario = Usuario("usuario", "usuario123")
 usuarios_cadastrados[admin._usuario] = admin
-usuarios_cadastrados[normal._usuario] = normal
+usuarios_cadastrados[usuario._usuario] = usuario
 
 app = Flask(__name__) # Inicia a aplicação com Flask
 app.secret_key = "bsd534534634$!@#$!Fsdnjgsiobjfbfjkffsdgsdkospvs" # Define a secret_key para uso de sessões (c/ cookies)
@@ -41,11 +16,25 @@ app.secret_key = "bsd534534634$!@#$!Fsdnjgsiobjfbfjkffsdgsdkospvs" # Define a se
 @app.route("/") 
 def index():
     """
+    Renderiza a página inicial do site com a listagem de restaurantes disponíveis.
     
+    Vefica via sessão se há um administrador logado, e permite a filtragem de restaurantes por categoria via query string.
+
+    Query Params:
+        categoria (str, optional): Nome da categoria selecionada para filtragem dos restaurantes, caso ausente ou igual a todos, exibe todos os restaurantes disponíveis.
+
+    Returns:
+        Response: Template 'home.html' renderizado com context:
+            - restaurantes (list): Lista de restaurantes cadastrados com ou sem filtro.
+            - categorias (list): Lista de categorias cadastradas.
+            - categoria_selecionada (str): Categoria atualmente selecionada.
+            - usuario_logado (str | None): Nome do usuário logado na sessão.
+            - admin_logado (bool): True se o usuário logado for um administrador. False caso contrário.
     """
-    admin_logado = False
-    usuario_logado = session.get('usuario_logado')
-    if usuario_logado == "useradmin":
+
+    admin_logado = False 
+    usuario_logado = session.get('usuario_logado') # Retorna o nome do usuário caso encontre (True), caso contrário retorna None (False).
+    if usuario_logado == "administrador": # Caso usuário logado seja o administrador de teste
         admin_logado = True
 
     categoria_selecionada = request.args.get('categoria') # ?categoria={resultado}
@@ -72,22 +61,33 @@ def index():
 
 @app.route("/login")
 def login():
+    """
+    Renderiza a página de log-in com formulário para preenchimento.
+
+    Returns:
+        Response: Template 'login.html'
+    """
+
     return render_template('auth/login.html')
 
 @app.route("/login/auth", methods=['GET', 'POST'])
 def autenticar_login():
     """
-    Autentica um usuário existente
+    Autentica o acesso de um usuário para log-in.
    
-    GET: retorna à página de log-in.  
-    POST: recebe os dados do formulário de log-in como usuário e senha, valida-os e 
+    GET: Retorna à página de log-in (acesso à página pela URL não é permitido).  
+    POST: Recebe os dados do formulário de log-in como usuário e senha, valida com a base de usuários cadastrados. Caso sucesso, efetua log-in.
 
-    Form data esperado:
-        usuário (str): nome de usuário, min. 6 caracteres, sem especiais.
-        senha (str): senha de usuário, min. 6 caracteres.
+    Form Data (POST):
+        usuário (str): Nome de usuário, min. 6 caracteres, sem especiais.
+        senha (str): Senha de usuário, min. 6 caracteres.
 
     Returns:
-        Redirect para 'login' caso usuário já exista ou forem inválidos. Redirect para 'index' caso sucesso.
+        Response: Redirect para 'index' com flash de sucesso, se autenticado.
+        Response: Redirect para 'login' com flash de erro caso usuário esteja incorreto ou não exista, ou senha seja inválida/incorreta.
+
+    Session:
+        usuario_logado (str): Definido com o nome do usuário autenticado.
     """
 
     if request.method == "GET": # Caso seja acessado pela URL
@@ -116,10 +116,31 @@ def autenticar_login():
 
 @app.route("/signin")
 def signin():
+    """
+    Renderiza a página de sign-in com formulário para preenchimento.
+    
+    Returns:
+        Response: Template 'sigin.html'
+    """
     return render_template("auth/signin.html")
 
 @app.route("/signin/auth", methods=['GET', 'POST'])
 def autenticar_signin():
+    """
+    Processa o cadastro de um novo usuário.
+   
+    GET: Retorna à página de sign-in (acesso à página pela URL não é permitido).  
+    POST: Recebe usuario e senha do formulário e valida se o usuário já existe na base de usuários. Caso não exista, tenta criar uma nova instância da classe Usuário, caso sucesso, cadastra um novo usuário. Caso contrário, retorna um flash de erro para a página de cadastro.
+
+    Form Data (POST):
+        usuário (str): nome de usuário, min. 6 caracteres, sem especiais.
+        senha (str): senha de usuário, min. 6 caracteres.
+
+    Returns:
+        Response: Redirect para 'login' com flash de sucesso, caso usuário for cadastrado.
+        Response: Redirect para 'signin' com flash de erro caso usuário já exista ou não respeite as normas de criação da classe Usuário.
+    """    
+
     if request.method == "GET":
         return redirect(url_for('signin'))
     
@@ -143,13 +164,17 @@ def autenticar_signin():
         
 @app.route("/logout")
 def logout():
+    """
+    Remove o usuário logado.
+    
+    Limpa a sessão removendo o usuário logado e redireciona para página principal.
+    """
     session.clear()
     return redirect(url_for("index"))
 
 @app.route("/restaurante")
 def restaurante():
     return render_template("/restaurant_page.html")
-
 
 if __name__ == "__main__":
     app.run(debug=True)
