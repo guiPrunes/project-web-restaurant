@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Detalhes do Restaurante{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/components/cards.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/pages/restaurant.css') }}">
+{% endblock %}
+
+{% block header %}
+    <header class="cabecalho">
+        <a href="/" class="cabecalho-titulo">Capricho</a>
+        <div class="cabecalho-usuario">
+            {% if usuario_logado %}
+                <a class="cabecalho-botao" href="/logout">Log-out</a>
+                <span class="usuario-nome">{{ usuario_logado }}</span>
+                <img class="usuario-foto" src="{{ url_for('static', filename='img/user.png') }}" alt="Foto do usuário">
+            {% else %}    
+                <a class="cabecalho-botao" href="/login">Log-in</a>
+            {% endif %}
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <div class="wrap">
+        <div class="voltar-container">
+            <a href="/" class="link-voltar">&larr; Voltar para a página inicial</a>
+        </div>
+        
+        <div class="restaurante-detalhe">
+            <span class="categoria-badge">
+                {{ restaurante._categoria if restaurante else 'Categoria' }}
+            </span>
+            <h2 class="restaurante-titulo">{{ restaurante._nome if restaurante else 'Nome do Restaurante' }}</h2>
+            <p class="avaliacao">
+                {{ restaurante.qntd_estrelas if restaurante else '★★★★★' }} 
+                <span class="avaliacao-qtd">{{ restaurante.media_avaliacoes if restaurante else '5.0' }} ({{ restaurante.total_avaliacoes if restaurante else '0' }})</span>
+            </p>
+            <div class="meta restaurante-meta">
+                <span><strong>Tempo de entrega:</strong> {{ restaurante._delivery._tempo_entrega if restaurante else '40-50 min' }}</span>
+                <span><strong>Taxa de entrega:</strong> {{ restaurante._delivery._taxa_entrega if restaurante else 'R$ 5,00' }}</span>
+            </div>
+        </div>
+
+        <h3 class="cardapio-titulo">Cardápio</h3>
+        <div class="grid">
+            <div class="card">
+                <div class="card-imagem">foto do prato</div>
+                <div class="card-info">
+                    <span class="categoria">Prato Principal</span>
+                    <h3>Nome do Prato</h3>
+                    <p class="prato-descricao">Descrição breve dos ingredientes do prato.</p>
+                    <div class="meta prato-meta">
+                        <strong>R$ 35,00</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

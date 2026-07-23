@@ -1,8 +1,7 @@
 from flask import Flask, redirect, render_template, flash, url_for, session, request
 from models.usuario import Usuario
-from models.ex_testes import restaurantes, categorias
+from tests.ex_testes import restaurantes, categorias
 
-filtro_restaurantes = []
 usuarios_cadastrados = {}
 
 admin = Usuario("administrador", "admin123")
@@ -31,6 +30,8 @@ def index():
             - usuario_logado (str | None): Nome do usuário logado na sessão.
             - admin_logado (bool): True se o usuário logado for um administrador. False caso contrário.
     """
+
+    filtro_restaurantes = []
 
     admin_logado = False 
     usuario_logado = session.get('usuario_logado') # Retorna o nome do usuário caso encontre (True), caso contrário retorna None (False).
@@ -174,7 +175,7 @@ def logout():
 
 @app.route("/restaurante")
 def restaurante():
-    return render_template("/restaurant_page.html")
+    return render_template("main/restaurant.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
