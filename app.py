@@ -16,9 +16,9 @@ app.secret_key = "bsd534534634$!@#$!Fsdnjgsiobjfbfjkffsdgsdkospvs" # Define a se
 @app.route("/") 
 def index():
     """
-    Renderiza a página inicial do site com a listagem de restaurantes disponíveis
+    Renderiza a página inicial do site com a listagem de restaurantes disponíveis.
     
-    Vefica via sessão se há um administrador logado, e permite a filtragem de restaurantes por categoria via query string
+    Vefica via sessão se há um administrador logado, e permite a filtragem de restaurantes por categoria via query string.
 
     Query Params:
         categoria (str, optional): Nome da categoria selecionada para filtragem dos restaurantes, caso ausente ou igual a todos, exibe todos os restaurantes disponíveis.
@@ -73,14 +73,14 @@ def login():
 @app.route("/login/auth", methods=['GET', 'POST'])
 def autenticar_login():
     """
-    Autentica o acesso de um usuário para log-in
+    Autentica o acesso de um usuário para log-in.
    
     GET: Retorna à página de log-in (acesso à página pela URL não é permitido).  
     POST: Recebe os dados do formulário de log-in como usuário e senha, valida com a base de usuários cadastrados. Caso sucesso, efetua log-in.
 
     Form Data (POST):
-        usuário (str): nome de usuário, min. 6 caracteres, sem especiais.
-        senha (str): senha de usuário, min. 6 caracteres.
+        usuário (str): Nome de usuário, min. 6 caracteres, sem especiais.
+        senha (str): Senha de usuário, min. 6 caracteres.
 
     Returns:
         Response: Redirect para 'index' com flash de sucesso, se autenticado.
@@ -117,7 +117,7 @@ def autenticar_login():
 @app.route("/signin")
 def signin():
     """
-    Renderiza a página de sign-in com formulário para preenchimento
+    Renderiza a página de sign-in com formulário para preenchimento.
     
     Returns:
         Response: Template 'sigin.html'
@@ -164,13 +164,17 @@ def autenticar_signin():
         
 @app.route("/logout")
 def logout():
+    """
+    Remove o usuário logado.
+    
+    Limpa a sessão removendo o usuário logado e redireciona para página principal.
+    """
     session.clear()
     return redirect(url_for("index"))
 
 @app.route("/restaurante")
 def restaurante():
     return render_template("/restaurant_page.html")
-
 
 if __name__ == "__main__":
     app.run(debug=True)
