@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, flash, url_for, session, request
+from flask import Flask, redirect, render_template, flash, url_for, abort, session, request
 from models.usuario import Usuario
 from tests.ex_testes import lista_restaurantes, categorias, usuarios_cadastrados
 
@@ -167,10 +167,13 @@ def logout():
     session.clear()
     return redirect(url_for("index"))
 
-@app.route("/restaurante")
-def restaurante():
-    return render_template("main/restaurant.html")
-
+@app.route("/restaurante/<nome_restaurante>")
+def restaurante(nome_restaurante):
+    restaurante_selecionado = lista_restaurantes.get(nome_restaurante)
+    if not restaurante_selecionado:
+        abort(404)
+    return render_template('main/restaurant.html')
+    
 if __name__ == "__main__":
     app.run(debug=True)
 

@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
-{% block title %}Detalhes do Restaurante{% endblock %}
+{% block title %}
+    Restaurante: {{ nome_restaurante }}
+{% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/components/cards.css') }}">
