@@ -43,8 +43,9 @@
             {% endfor %}
         </div>
         <div class="grid">
-            {% for restaurante in restaurantes %}
-            <a class="card" href="/restaurante">
+            {% for restaurante in lista_restaurantes.values() %}
+
+            <a class="card" href="{{ url_for('restaurante', nome_restaurante=restaurante._nome ) }}">
                 <div class="card-imagem">imagem</div>
                 <div class="card-info">
                     <span class="categoria">{{ restaurante._categoria }}</span>
@@ -53,6 +54,7 @@
                     <div class="meta"><span>{{ restaurante._delivery._tempo_entrega }}</span><span>{{ restaurante._delivery._taxa_entrega }}</span></div>
                 </div>
             </a>
+
             {% endfor %}
         </div>
     </div>

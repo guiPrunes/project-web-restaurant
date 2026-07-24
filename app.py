@@ -1,13 +1,6 @@
 from flask import Flask, redirect, render_template, flash, url_for, session, request
 from models.usuario import Usuario
-from tests.ex_testes import restaurantes, categorias
-
-usuarios_cadastrados = {}
-
-admin = Usuario("administrador", "admin123")
-usuario = Usuario("usuario", "usuario123")
-usuarios_cadastrados[admin._usuario] = admin
-usuarios_cadastrados[usuario._usuario] = usuario
+from tests.ex_testes import lista_restaurantes, categorias, usuarios_cadastrados
 
 app = Flask(__name__) # Inicia a aplicação com Flask
 app.secret_key = "bsd534534634$!@#$!Fsdnjgsiobjfbfjkffsdgsdkospvs" # Define a secret_key para uso de sessões (c/ cookies)
@@ -31,7 +24,7 @@ def index():
             - admin_logado (bool): True se o usuário logado for um administrador. False caso contrário.
     """
 
-    filtro_restaurantes = []
+    filtro_restaurantes = {}
 
     admin_logado = False 
     usuario_logado = session.get('usuario_logado') # Retorna o nome do usuário caso encontre (True), caso contrário retorna None (False).
@@ -40,20 +33,21 @@ def index():
 
     categoria_selecionada = request.args.get('categoria') # ?categoria={resultado}
     filtro_restaurantes.clear() # Limpa o filtro quando recarregada a página
+
     if not categoria_selecionada or categoria_selecionada == "Todos":
         return render_template('main/home.html', 
-                               restaurantes=restaurantes, 
+                               lista_restaurantes=lista_restaurantes, 
                                categorias=categorias, 
                                categoria_selecionada=categoria_selecionada, 
                                usuario_logado=usuario_logado, 
                                admin_logado=admin_logado
                                )
     else:
-        for restaurante in restaurantes:
+        for restaurante in lista_restaurantes.values():
             if restaurante._categoria == categoria_selecionada:
-                filtro_restaurantes.append(restaurante)
+                filtro_restaurantes[restaurante._nome] = restaurante
         return render_template('main/home.html', 
-                               restaurantes=filtro_restaurantes, 
+                               lista_restaurantes=filtro_restaurantes, 
                                categorias=categorias, 
                                categoria_selecionada=categoria_selecionada, 
                                usuario_logado=usuario_logado, 
